@@ -15,11 +15,11 @@ typedef struct HTTPreq {
 
 typedef struct HTTP HTTP;
 
-extern HTTP *new_http(char *address);
-extern void free_http(HTTP *http);
+HTTP* http_new(char *address);
+void http_free(HTTP *http);
 
-extern void handle_http(HTTP *http, char *path, void(*)(int, HTTPreq*));
-extern int8_t listen_http(HTTP *http);
-extern void parsehtml_http(int conn, char *filename);
+int8_t http_listen(HTTP *http);
+void http_handle(HTTP *http, char *path, void(*)(int, HTTPreq*));
+void http_parsehtml(int conn, char *filename);
 
 #endif /* HTTP_H */

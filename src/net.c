@@ -25,9 +25,9 @@ typedef enum error_t {
 
 static int8_t _parse_address(char *address, char *ipv4, char *port);
 
-extern int listen_net(char *address) {
-#ifndef __WIN32
-    WSDATA wsa;
+int net_listen(char *address) {
+#ifdef __WIN32
+    WSADATA wsa;
     if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
         return WINSOCK_ERR;
     }
@@ -60,13 +60,13 @@ extern int listen_net(char *address) {
     return listener;
 }
 
-extern int accept_net(int listener) {
+int net_accept(int listener) {
     return accept(listener, NULL, NULL);
 }
 
-extern int connect_net(char *address) {
-#ifndef __WIN32
-    WSDATA wsa;
+int net_connect(char *address) {
+#ifdef __WIN32
+    WSADATA wsa;
     if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
         return WINSOCK_ERR;
     }
@@ -93,7 +93,7 @@ extern int connect_net(char *address) {
     return conn;
 }
 
-extern int close_net(int conn) {
+int net_close(int conn) {
 #ifdef __linux__
     return close(conn);
 #elif __WIN32
@@ -101,16 +101,17 @@ extern int close_net(int conn) {
 #endif
 }
 
-extern int send_net(int conn, char *buffer, size_t size) {
+int net_send(int conn, char *buffer, size_t size) {
     return send(conn, buffer, (int)size, 0);
 }
 
-extern int recv_net(int conn, char *buffer, size_t size) {
+int net_recv(int conn, char *buffer, size_t size) {
     return recv(conn, buffer, size, 0);
 }
 
 static int8_t _parse_address(char *address, char *ipv4, char *port) {
     size_t i = 0, j = 0;
+    // Parse IPv4 part
     for (; address[i] != ':'; ++i) {
         if (address[i] == '\0')
             return 1;
@@ -120,7 +121,11 @@ static int8_t _parse_address(char *address, char *ipv4, char *port) {
         ipv4[i] = address[i];
     }
     ipv4[i] = '\0';
-    for (i += 1; address[j] != '\0'; ++i, ++j) {
+    if (address[i] != ':')
+        return 1;
+    ++i;
+    // Parse port part
+    for (; address[i] != '\0'; ++i, ++j) {
         if (j >= 5)
             return 3;
         port[j] = address[i];

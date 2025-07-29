@@ -17,7 +17,7 @@ int main(void) {
 }
 
 void index_page(int conn, HTTPreq *request) {
-    if (strcmp(req->path, "/") != 0) {
+    if (strcmp(request->path, "/") != 0) {
         parsehtml_http(conn, "index.html");
         return;
     }

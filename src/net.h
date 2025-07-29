@@ -3,13 +3,13 @@
 
 #include <stddef.h>
 
-extern int listen_net(char *address);
-extern int accept_net(int listener);
+int net_listen(char *address);
+int net_accept(int listener);
 
-extern int connect_net(char *address);
-extern int close_net(int conn);
+int net_connect(char *address);
+int net_close(int conn);
 
-extern int send_net(int conn, char *buffer, size_t size);
-extern int recv_net(int conn, char *buffer, size_t size);
+int net_send(int conn, char *buffer, size_t size);
+int net_recv(int conn, char *buffer, size_t size);
 
 #endif /* NET_H */
