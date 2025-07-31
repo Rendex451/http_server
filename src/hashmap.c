@@ -36,7 +36,7 @@ HashMap *hashmap_new(size_t size, vtype_t key, vtype_t value) {
             fprintf(stderr, "%s\n", "value type not supported");
             return NULL;
     }
-    HashMap *hashmap = (hashmap*)malloc(sizeof(hashmap));
+    HashMap *hashmap = (HashMap*)malloc(sizeof(HashMap));
     hashmap->table = (Tree**)malloc(size * sizeof(Tree*));
     for (size_t i = 0; i < size; ++i) {
         hashmap->table[i] = tree_new(key, value);

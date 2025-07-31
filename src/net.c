@@ -111,7 +111,6 @@ int net_recv(int conn, char *buffer, size_t size) {
 
 static int8_t _parse_address(char *address, char *ipv4, char *port) {
     size_t i = 0, j = 0;
-    // Parse IPv4 part
     for (; address[i] != ':'; ++i) {
         if (address[i] == '\0')
             return 1;
@@ -124,7 +123,6 @@ static int8_t _parse_address(char *address, char *ipv4, char *port) {
     if (address[i] != ':')
         return 1;
     ++i;
-    // Parse port part
     for (; address[i] != '\0'; ++i, ++j) {
         if (j >= 5)
             return 3;

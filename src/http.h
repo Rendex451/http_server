@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stddef.h>
 
-
 typedef struct HTTPreq {
     char method[16];
     char path[2048];
@@ -19,7 +18,7 @@ HTTP* http_new(char *address);
 void http_free(HTTP *http);
 
 int8_t http_listen(HTTP *http);
-void http_handle(HTTP *http, char *path, void(*)(int, HTTPreq*));
+void http_handle(HTTP *http, char *path, void(*handle)(int, HTTPreq*));
 void http_parsehtml(int conn, char *filename);
 
 #endif /* HTTP_H */
